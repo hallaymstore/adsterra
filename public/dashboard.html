@@ -6,6 +6,12 @@
   <title>Dashboard — Reward Arena</title>
   <style>
     :root{--bg:#080b18;--card:rgba(255,255,255,.08);--card2:rgba(255,255,255,.13);--text:#f8fbff;--muted:#aab6d3;--line:rgba(255,255,255,.14);--primary:#7c3cff;--primary2:#00e5ff;--good:#3dff9e;--warn:#ffd166;--bad:#ff5c8a;--shadow:0 22px 80px rgba(0,0,0,.4);--radius:26px}body.light{--bg:#f4f7ff;--card:rgba(255,255,255,.84);--card2:rgba(255,255,255,.96);--text:#121831;--muted:#59627a;--line:rgba(18,24,49,.12);--shadow:0 22px 70px rgba(60,58,138,.16)}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 18% 10%,rgba(124,60,255,.42),transparent 27%),radial-gradient(circle at 86% 8%,rgba(0,229,255,.30),transparent 24%),radial-gradient(circle at 65% 95%,rgba(61,255,158,.15),transparent 24%),var(--bg);min-height:100vh}a{text-decoration:none;color:inherit}.wrap{width:min(1220px,92vw);margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}.brand{display:flex;gap:12px;align-items:center;font-weight:950}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;box-shadow:0 0 35px rgba(124,60,255,.55);font-size:22px}.navlinks{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:12px 15px;border-radius:16px;font-weight:900;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-2px);border-color:rgba(0,229,255,.45)}.btn.primary{border:0;background:linear-gradient(135deg,var(--primary),#ff4fd8);box-shadow:0 12px 34px rgba(124,60,255,.35);color:#fff}.btn.good{border:0;background:linear-gradient(135deg,#00c875,var(--good));color:#031711}.btn.bad{border:0;background:linear-gradient(135deg,#ff357c,#ff8a00);color:#fff}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;padding:18px 0 60px}.hero,.card{border:1px solid var(--line);background:linear-gradient(180deg,var(--card2),rgba(255,255,255,.055));border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);backdrop-filter:blur(16px)}.hero h1{font-size:clamp(28px,4vw,54px);letter-spacing:-2px;margin:0 0 10px}.muted{color:var(--muted);line-height:1.65}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.stat{border:1px solid var(--line);background:rgba(0,0,0,.16);border-radius:22px;padding:16px}.light .stat{background:rgba(255,255,255,.55)}.stat span{color:var(--muted);font-size:13px;font-weight:800}.stat b{display:block;margin-top:7px;font-size:25px}.arena{display:grid;gap:16px}.bigbtn{min-height:220px;border:0;border-radius:30px;color:#fff;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.26),transparent 19%),linear-gradient(135deg,#7c3cff,#ff4fd8 55%,#00e5ff);box-shadow:0 22px 80px rgba(124,60,255,.35);cursor:pointer;padding:26px;text-align:left;position:relative;overflow:hidden}.bigbtn:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-80px;top:-80px;background:rgba(255,255,255,.14)}.bigbtn h2{font-size:34px;margin:0 0 8px}.bigbtn p{font-size:16px;margin:0;color:rgba(255,255,255,.86);max-width:560px}.progress{height:14px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:20px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary2),var(--good));border-radius:999px;transition:.35s}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:640px}.table th,.table td{text-align:left;padding:13px;border-bottom:1px solid var(--line);font-size:14px}.table th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(124,60,255,.14);border:1px solid var(--line);font-weight:800}.modal{position:fixed;inset:0;background:rgba(3,5,12,.78);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;backdrop-filter:blur(10px)}.modal.show{display:flex}.modalbox{width:min(920px,96vw);min-height:520px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(20,24,48,.96),rgba(11,14,30,.97));border-radius:30px;box-shadow:0 30px 120px rgba(0,0,0,.6);padding:18px;position:relative;overflow:hidden}.light .modalbox{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(240,244,255,.97))}.modalhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.timer{display:flex;align-items:center;gap:10px}.circle{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--primary2) var(--p,0%),rgba(255,255,255,.16) 0);font-weight:950}.adbox{border:1px dashed rgba(0,229,255,.42);border-radius:24px;min-height:350px;display:grid;place-items:center;padding:18px;background:rgba(255,255,255,.04);overflow:hidden;text-align:center}.adbox iframe{max-width:100%;border:0;border-radius:16px}.adnote{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.5}.toast{position:fixed;right:18px;bottom:18px;border:1px solid var(--line);background:var(--card2);color:var(--text);padding:15px 18px;border-radius:18px;box-shadow:var(--shadow);display:none;z-index:70}.toast.show{display:block}.hide{display:none!important}@media(max-width:930px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.navlinks .smhide{display:none}.bigbtn{min-height:180px}.modalbox{min-height:auto}}@media(max-width:540px){.stats{grid-template-columns:1fr}.nav{align-items:flex-start}.bigbtn h2{font-size:27px}.table{min-width:540px}}
+
+    /* Mobile-first ad rendering improvements */
+    body.ad-lock{overflow:hidden}.modalbox{max-height:92vh;overflow:auto}.adbox{position:relative}.adbox .ad-shell{width:100%;display:grid;place-items:center;overflow:hidden}.adbox .banner-scale{display:inline-block;transform-origin:top center}.adbox .direct-frame{width:100%;height:min(430px,62vh);border:0;border-radius:18px;background:#fff}.adbox .direct-fallback{display:grid;gap:12px;place-items:center;min-height:240px}.adbox .native-holder{width:100%;min-height:260px;display:grid;place-items:center}.adbox .pop-note{display:grid;place-items:center;gap:12px;min-height:260px;color:var(--muted)}.sponsor-line{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}.sponsor-chip{border:1px solid var(--line);background:rgba(0,229,255,.08);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;color:var(--muted)}
+    @media(max-width:720px){.wrap{width:min(100% - 22px,1220px)}.nav{gap:12px;align-items:flex-start}.navlinks{justify-content:flex-end}.hero,.card{padding:18px;border-radius:22px}.grid{gap:14px}.stats{gap:10px}.stat{padding:13px;border-radius:18px}.stat b{font-size:21px}.modal{padding:10px;align-items:flex-end}.modalbox{width:100%;max-height:94vh;border-radius:24px 24px 18px 18px;padding:14px}.modalhead{align-items:flex-start;flex-direction:column}.timer{width:100%;justify-content:space-between}.adbox{min-height:310px;padding:12px;border-radius:18px}.adbox .direct-frame{height:330px}.circle{width:44px;height:44px}.bigbtn{border-radius:24px;padding:22px}.bigbtn p{font-size:14px}.sponsor-line{display:none}}
+    @media(max-width:420px){.navlinks{gap:8px}.btn{padding:10px 12px;border-radius:14px;font-size:13px}.brand span:last-child{display:none}.hero h1{font-size:31px}.adbox{min-height:285px}.adbox .direct-frame{height:300px}.table{min-width:520px}}
+
   </style>
 </head>
 <body>
@@ -71,6 +77,7 @@
     </div>
     <div class="adbox" id="adBox"><div>Ad loading...</div></div>
     <div class="adnote">Eslatma: reward faqat ichki platforma ledgeriga yoziladi. Reklama ustiga majburan bosish talab qilinmaydi.</div>
+    <div class="sponsor-line"><span class="sponsor-chip">Native</span><span class="sponsor-chip">320×50</span><span class="sponsor-chip">300×250</span><span class="sponsor-chip">Leaderboard</span><span class="sponsor-chip">Direct</span></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -86,15 +93,16 @@
   let me=null, activeSession=null, completing=false;
 
   const placements = [
-    {name:'Native Banner', type:'native', container:'container-f66cf1f957f7352dcb1d23cc42babe16', src:'https://pl29294802.profitablecpmratenetwork.com/f66cf1f957f7352dcb1d23cc42babe16/invoke.js'},
-    {name:'Script Placement A', type:'script', src:'https://pl29294801.profitablecpmratenetwork.com/52/b6/1f/52b61fce4a1557a8b8827de35b787bbd.js'},
-    {name:'Script Placement B', type:'script', src:'https://pl29294803.profitablecpmratenetwork.com/78/81/18/78811802ea7ca4bd1f568b5ac55370b4.js'},
-    {name:'Direct Link', type:'iframe', src:'https://www.profitablecpmratenetwork.com/d62n2g48ua?key=702afedfeeefecc3b673e0e852f72acd'},
-    {name:'468x60', type:'at', key:'5b5ec83c7fca1e7ed176449655f44a89', w:468, h:60},
-    {name:'300x250', type:'at', key:'d2ed74846e2ab8d796b08e1d17293d55', w:300, h:250},
-    {name:'160x600', type:'at', key:'3a53f18d954fe09dbd27432fd691b464', w:160, h:600},
-    {name:'320x50', type:'at', key:'a938042ba4b15b80065b6d2ceb76b843', w:320, h:50},
-    {name:'728x90', type:'at', key:'d15df3db4a4b67a52ba82f8475f82add', w:728, h:90}
+    {name:'Native Display', type:'native', container:'container-e884bc1779f790089be3868bcb7ae57b', src:'https://pl29295128.profitablecpmratenetwork.com/e884bc1779f790089be3868bcb7ae57b/invoke.js', mobile:true, desktop:true},
+    {name:'Social Bar / Pop Script', type:'script', src:'https://pl29295127.profitablecpmratenetwork.com/a8/c2/bb/a8c2bbf7e2683dade4ebcd2859b0e2dc.js', mobile:true, desktop:true},
+    {name:'Smart Script Placement', type:'script', src:'https://pl29295130.profitablecpmratenetwork.com/2e/81/a4/2e81a418a45dfda865c8c6fd415a6a90.js', mobile:true, desktop:true},
+    {name:'Direct Sponsor Link', type:'direct', src:'https://www.profitablecpmratenetwork.com/q7hhu8g35?key=51a08a3230830f281dc529266b20a71e', mobile:true, desktop:true},
+    {name:'Mobile 320x50', type:'at', key:'6b925f0b8d93621304372c56656c6803', w:320, h:50, mobile:true, desktop:true},
+    {name:'Medium Rectangle 300x250', type:'at', key:'c520d7891b76bd627446d465f30a3bf3', w:300, h:250, mobile:true, desktop:true},
+    {name:'Compact Skyscraper 160x300', type:'at', key:'700cbafcda0a8055840f4691511c072d', w:160, h:300, mobile:true, desktop:true},
+    {name:'Banner 468x60', type:'at', key:'8655fc4caef0474209b493a96e6268db', w:468, h:60, mobile:false, desktop:true},
+    {name:'Leaderboard 728x90', type:'at', key:'3aec706d29577502f77586082a27f7a3', w:728, h:90, mobile:false, desktop:true},
+    {name:'Skyscraper 160x600', type:'at', key:'89e75c4138a44e316d041a0b397c9a81', w:160, h:600, mobile:false, desktop:true}
   ];
 
   function renderUser(){
@@ -126,24 +134,69 @@
     const s=document.createElement('script'); s.src=src; s.async=true;
     Object.entries(attrs).forEach(([k,v])=>s.setAttribute(k,v));
     $('#adBox').appendChild(s);
+    return s;
+  }
+  function pickPlacement(){
+    const isMobile = window.innerWidth <= 640;
+    const list = placements.filter(p => isMobile ? p.mobile !== false : p.desktop !== false);
+    return list[Math.floor(Math.random()*list.length)];
+  }
+  function fitScale(w, h){
+    const boxWidth = Math.max(240, $('#adBox').clientWidth - 28);
+    const scale = Math.min(1, boxWidth / w);
+    return {scale, shellHeight: Math.ceil(h * scale) + 16};
+  }
+  function renderAtPlacement(p){
+    const fit = fitScale(p.w, p.h);
+    const shell=document.createElement('div');
+    shell.className='ad-shell';
+    shell.style.minHeight = fit.shellHeight + 'px';
+    const inner=document.createElement('div');
+    inner.className='banner-scale';
+    inner.style.width=p.w+'px';
+    inner.style.minHeight=p.h+'px';
+    inner.style.transform=`scale(${fit.scale})`;
+    shell.appendChild(inner);
+    $('#adBox').appendChild(shell);
+    window.atOptions = { key:p.key, format:'iframe', height:p.h, width:p.w, params:{} };
+    const s=document.createElement('script');
+    s.src=`https://www.highperformanceformat.com/${p.key}/invoke.js`;
+    s.async=true;
+    inner.appendChild(s);
+  }
+  function renderDirectPlacement(p){
+    const fallback = document.createElement('div');
+    fallback.className='direct-fallback';
+    fallback.innerHTML = `<div class="muted">Sponsor sahifasi yuklanmoqda. Agar iframe bloklansa, quyidagi tugma orqali ochiladi.</div><a class="btn primary" target="_blank" rel="noopener noreferrer" href="${p.src}">Sponsor sahifani ochish</a>`;
+    const frame=document.createElement('iframe');
+    frame.className='direct-frame';
+    frame.src=p.src;
+    frame.loading='lazy';
+    frame.referrerPolicy='no-referrer-when-downgrade';
+    frame.onerror=()=>{ $('#adBox').innerHTML=''; $('#adBox').appendChild(fallback); };
+    $('#adBox').appendChild(frame);
+    setTimeout(()=>{
+      if(!frame.contentWindow){ $('#adBox').innerHTML=''; $('#adBox').appendChild(fallback); }
+    },1800);
   }
   function loadAdPlacement(){
-    const p = placements[Math.floor(Math.random()*placements.length)];
+    const p = pickPlacement();
     $('#adBox').innerHTML = `<div class="muted">${p.name} yuklanmoqda...</div>`;
     $('#modalStatus').textContent = `${p.name} • 5 soniya kuting`;
     setTimeout(()=>{
       $('#adBox').innerHTML='';
       if(p.type==='native'){
-        const div=document.createElement('div'); div.id=p.container; $('#adBox').appendChild(div);
+        const shell=document.createElement('div'); shell.className='native-holder';
+        const div=document.createElement('div'); div.id=p.container; shell.appendChild(div); $('#adBox').appendChild(shell);
         injectScript(p.src, {'data-cfasync':'false'});
       } else if(p.type==='script'){
+        const note=document.createElement('div'); note.className='pop-note'; note.innerHTML='<b>⚡ Sponsor script yuklandi</b><span>Reklama oynasi yoki social bar provider tomonidan ko‘rsatiladi.</span>';
+        $('#adBox').appendChild(note);
         injectScript(p.src);
-      } else if(p.type==='iframe'){
-        const frame=document.createElement('iframe'); frame.src=p.src; frame.width='100%'; frame.height='360'; frame.loading='lazy'; frame.referrerPolicy='no-referrer-when-downgrade'; $('#adBox').appendChild(frame);
+      } else if(p.type==='direct'){
+        renderDirectPlacement(p);
       } else if(p.type==='at'){
-        const holder=document.createElement('div'); holder.style.width=Math.min(p.w, window.innerWidth-80)+'px'; holder.style.maxWidth='100%'; holder.style.minHeight=Math.min(p.h, 360)+'px'; holder.style.display='grid'; holder.style.placeItems='center'; holder.innerHTML='<span class="muted">Banner slot</span>'; $('#adBox').appendChild(holder);
-        window.atOptions = { key:p.key, format:'iframe', height:p.h, width:p.w, params:{} };
-        injectScript(`https://www.highperformanceformat.com/${p.key}/invoke.js`);
+        renderAtPlacement(p);
       }
     },150);
   }
@@ -151,12 +204,12 @@
   async function startAd(){
     if(completing) return;
     $('#closeAdBtn').classList.add('hide');
-    $('#adModal').classList.add('show');
+    $('#adModal').classList.add('show'); document.body.classList.add('ad-lock');
     $('#circle').textContent='5'; $('#circle').style.setProperty('--p','0%');
     $('#adBox').innerHTML='<div>Session ochilmoqda...</div>';
     const res = await fetch('/api/ad/session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
     const out = await res.json();
-    if(!out.ok){ $('#adModal').classList.remove('show'); return toast(out.message || 'Ad session xato'); }
+    if(!out.ok){ $('#adModal').classList.remove('show'); document.body.classList.remove('ad-lock'); return toast(out.message || 'Ad session xato'); }
     activeSession = out.sessionId;
     const seconds = out.viewSeconds || 5;
     loadAdPlacement();
@@ -186,7 +239,7 @@
     toast(`${out.isLucky ? 'Lucky reward' : 'Reward'}: +${fmt(out.reward)}`);
   }
   watchBtn.onclick = startAd;
-  closeAdBtn.onclick = () => { $('#adModal').classList.remove('show'); $('#adBox').innerHTML=''; activeSession=null; };
+  closeAdBtn.onclick = () => { $('#adModal').classList.remove('show'); document.body.classList.remove('ad-lock'); $('#adBox').innerHTML=''; activeSession=null; };
   copyRef.onclick = async () => { await navigator.clipboard.writeText($('#refLink').value); toast('Referral link copy qilindi'); };
   logoutBtn.onclick = async () => { await fetch('/api/auth/logout',{method:'POST'}); location.href='/login.html'; };
   loadMe();
