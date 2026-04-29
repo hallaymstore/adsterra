@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard — Reward Arena</title>
+  <style>
+    :root{--bg:#080b18;--card:rgba(255,255,255,.08);--card2:rgba(255,255,255,.13);--text:#f8fbff;--muted:#aab6d3;--line:rgba(255,255,255,.14);--primary:#7c3cff;--primary2:#00e5ff;--good:#3dff9e;--warn:#ffd166;--bad:#ff5c8a;--shadow:0 22px 80px rgba(0,0,0,.4);--radius:26px}body.light{--bg:#f4f7ff;--card:rgba(255,255,255,.84);--card2:rgba(255,255,255,.96);--text:#121831;--muted:#59627a;--line:rgba(18,24,49,.12);--shadow:0 22px 70px rgba(60,58,138,.16)}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 18% 10%,rgba(124,60,255,.42),transparent 27%),radial-gradient(circle at 86% 8%,rgba(0,229,255,.30),transparent 24%),radial-gradient(circle at 65% 95%,rgba(61,255,158,.15),transparent 24%),var(--bg);min-height:100vh}a{text-decoration:none;color:inherit}.wrap{width:min(1220px,92vw);margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}.brand{display:flex;gap:12px;align-items:center;font-weight:950}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;box-shadow:0 0 35px rgba(124,60,255,.55);font-size:22px}.navlinks{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:12px 15px;border-radius:16px;font-weight:900;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-2px);border-color:rgba(0,229,255,.45)}.btn.primary{border:0;background:linear-gradient(135deg,var(--primary),#ff4fd8);box-shadow:0 12px 34px rgba(124,60,255,.35);color:#fff}.btn.good{border:0;background:linear-gradient(135deg,#00c875,var(--good));color:#031711}.btn.bad{border:0;background:linear-gradient(135deg,#ff357c,#ff8a00);color:#fff}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;padding:18px 0 60px}.hero,.card{border:1px solid var(--line);background:linear-gradient(180deg,var(--card2),rgba(255,255,255,.055));border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);backdrop-filter:blur(16px)}.hero h1{font-size:clamp(28px,4vw,54px);letter-spacing:-2px;margin:0 0 10px}.muted{color:var(--muted);line-height:1.65}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.stat{border:1px solid var(--line);background:rgba(0,0,0,.16);border-radius:22px;padding:16px}.light .stat{background:rgba(255,255,255,.55)}.stat span{color:var(--muted);font-size:13px;font-weight:800}.stat b{display:block;margin-top:7px;font-size:25px}.arena{display:grid;gap:16px}.bigbtn{min-height:220px;border:0;border-radius:30px;color:#fff;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.26),transparent 19%),linear-gradient(135deg,#7c3cff,#ff4fd8 55%,#00e5ff);box-shadow:0 22px 80px rgba(124,60,255,.35);cursor:pointer;padding:26px;text-align:left;position:relative;overflow:hidden}.bigbtn:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-80px;top:-80px;background:rgba(255,255,255,.14)}.bigbtn h2{font-size:34px;margin:0 0 8px}.bigbtn p{font-size:16px;margin:0;color:rgba(255,255,255,.86);max-width:560px}.progress{height:14px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:20px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary2),var(--good));border-radius:999px;transition:.35s}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:640px}.table th,.table td{text-align:left;padding:13px;border-bottom:1px solid var(--line);font-size:14px}.table th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(124,60,255,.14);border:1px solid var(--line);font-weight:800}.modal{position:fixed;inset:0;background:rgba(3,5,12,.78);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;backdrop-filter:blur(10px)}.modal.show{display:flex}.modalbox{width:min(920px,96vw);min-height:520px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(20,24,48,.96),rgba(11,14,30,.97));border-radius:30px;box-shadow:0 30px 120px rgba(0,0,0,.6);padding:18px;position:relative;overflow:hidden}.light .modalbox{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(240,244,255,.97))}.modalhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.timer{display:flex;align-items:center;gap:10px}.circle{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--primary2) var(--p,0%),rgba(255,255,255,.16) 0);font-weight:950}.adbox{border:1px dashed rgba(0,229,255,.42);border-radius:24px;min-height:350px;display:grid;place-items:center;padding:18px;background:rgba(255,255,255,.04);overflow:hidden;text-align:center}.adbox iframe{max-width:100%;border:0;border-radius:16px}.adnote{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.5}.toast{position:fixed;right:18px;bottom:18px;border:1px solid var(--line);background:var(--card2);color:var(--text);padding:15px 18px;border-radius:18px;box-shadow:var(--shadow);display:none;z-index:70}.toast.show{display:block}.hide{display:none!important}@media(max-width:930px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.navlinks .smhide{display:none}.bigbtn{min-height:180px}.modalbox{min-height:auto}}@media(max-width:540px){.stats{grid-template-columns:1fr}.nav{align-items:flex-start}.bigbtn h2{font-size:27px}.table{min-width:540px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a class="brand" href="/dashboard.html"><span class="logo">⚡</span><span>Reward Arena</span></a>
+    <div class="navlinks">
+      <a class="btn" href="/withdraw.html">💳 Withdraw</a>
+      <a class="btn smhide" id="adminLink" href="/admin.html" style="display:none">👑 Admin</a>
+      <button class="btn" id="themeBtn">🌗 Rejim</button>
+      <button class="btn bad" id="logoutBtn">Chiqish</button>
+    </div>
+  </nav>
+
+  <main class="grid">
+    <section class="hero">
+      <div class="pill">🎮 Player: <span id="playerName">...</span></div>
+      <h1>Reklama Arena</h1>
+      <p class="muted">Tugmani bosing, modalda reklama 5 soniya ko‘rinadi. Close chiqqandan keyin reward ichki balansga yoziladi. Taxminiy target: <b>$1 ≈ 1200 view</b>.</p>
+      <div class="stats">
+        <div class="stat"><span>Balance</span><b id="balance">$0.000000</b></div>
+        <div class="stat"><span>Frozen</span><b id="frozen">$0.000000</b></div>
+        <div class="stat"><span>Ad Views</span><b id="views">0</b></div>
+        <div class="stat"><span>Lucky Drops</span><b id="lucky">0</b></div>
+      </div>
+      <div class="progress"><span id="targetBar"></span></div>
+      <p class="muted" id="targetText">$1 target progress hisoblanmoqda...</p>
+    </section>
+
+    <section class="arena">
+      <button class="bigbtn" id="watchBtn">
+        <h2>▶ Reklama ko‘rish</h2>
+        <p>Har sessiya serverda ochiladi. 5 soniyadan oldin reward berilmaydi.</p>
+      </button>
+      <div class="card">
+        <h3 style="margin-top:0">Referral link</h3>
+        <p class="muted">Referral bonus logikasi keyingi bosqichga tayyor: hozircha link userga bog‘lanadi.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <input id="refLink" readonly style="flex:1;min-width:230px;border:1px solid var(--line);background:rgba(0,0,0,.12);color:var(--text);padding:14px;border-radius:16px">
+          <button class="btn primary" id="copyRef">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="grid-column:1/-1">
+      <h3 style="margin-top:0">Oxirgi transactionlar</h3>
+      <div class="tablewrap"><table class="table"><thead><tr><th>Vaqt</th><th>Type</th><th>Amount</th><th>Balance</th><th>Note</th></tr></thead><tbody id="txRows"><tr><td colspan="5">Yuklanmoqda...</td></tr></tbody></table></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="adModal">
+  <div class="modalbox">
+    <div class="modalhead">
+      <div>
+        <b>Adsterra Arena</b>
+        <div class="muted" id="modalStatus">Reklama yuklanmoqda...</div>
+      </div>
+      <div class="timer">
+        <div class="circle" id="circle">5</div>
+        <button class="btn good hide" id="closeAdBtn">Close & Claim</button>
+      </div>
+    </div>
+    <div class="adbox" id="adBox"><div>Ad loading...</div></div>
+    <div class="adnote">Eslatma: reward faqat ichki platforma ledgeriga yoziladi. Reklama ustiga majburan bosish talab qilinmaydi.</div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const $ = s => document.querySelector(s);
+  const theme = localStorage.getItem('theme') || 'dark';
+  if(theme === 'light') document.body.classList.add('light');
+  themeBtn.onclick = () => { document.body.classList.toggle('light'); localStorage.setItem('theme', document.body.classList.contains('light') ? 'light':'dark'); };
+  function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),3200); }
+  function fmt(n,d=6){ return '$'+Number(n||0).toFixed(d); }
+  function dateFmt(x){ return new Date(x).toLocaleString(); }
+  let me=null, activeSession=null, completing=false;
+
+  const placements = [
+    {name:'Native Banner', type:'native', container:'container-f66cf1f957f7352dcb1d23cc42babe16', src:'https://pl29294802.profitablecpmratenetwork.com/f66cf1f957f7352dcb1d23cc42babe16/invoke.js'},
+    {name:'Script Placement A', type:'script', src:'https://pl29294801.profitablecpmratenetwork.com/52/b6/1f/52b61fce4a1557a8b8827de35b787bbd.js'},
+    {name:'Script Placement B', type:'script', src:'https://pl29294803.profitablecpmratenetwork.com/78/81/18/78811802ea7ca4bd1f568b5ac55370b4.js'},
+    {name:'Direct Link', type:'iframe', src:'https://www.profitablecpmratenetwork.com/d62n2g48ua?key=702afedfeeefecc3b673e0e852f72acd'},
+    {name:'468x60', type:'at', key:'5b5ec83c7fca1e7ed176449655f44a89', w:468, h:60},
+    {name:'300x250', type:'at', key:'d2ed74846e2ab8d796b08e1d17293d55', w:300, h:250},
+    {name:'160x600', type:'at', key:'3a53f18d954fe09dbd27432fd691b464', w:160, h:600},
+    {name:'320x50', type:'at', key:'a938042ba4b15b80065b6d2ceb76b843', w:320, h:50},
+    {name:'728x90', type:'at', key:'d15df3db4a4b67a52ba82f8475f82add', w:728, h:90}
+  ];
+
+  function renderUser(){
+    $('#playerName').textContent = me.fullName || me.email;
+    $('#balance').textContent = fmt(me.balance);
+    $('#frozen').textContent = fmt(me.frozenBalance);
+    $('#views').textContent = Number(me.adViews||0).toLocaleString();
+    $('#lucky').textContent = Number(me.luckyRewards||0).toLocaleString();
+    const p = Math.min(100, ((me.adViews || 0) / 1200) * 100);
+    $('#targetBar').style.width = p + '%';
+    $('#targetText').textContent = `${Math.round(p)}% progress — ${Math.max(0, 1200-(me.adViews||0)).toLocaleString()} view taxminan $1 targetgacha.`;
+    $('#refLink').value = `${location.origin}/login.html?mode=register&ref=${me.referralCode || ''}`;
+    $('#adminLink').style.display = me.role === 'admin' ? 'inline-flex' : 'none';
+  }
+
+  async function loadMe(){
+    const res = await fetch('/api/me');
+    if(!res.ok) return location.href='/login.html';
+    const out = await res.json();
+    me = out.user; renderUser(); loadTx();
+  }
+  async function loadTx(){
+    const res = await fetch('/api/transactions'); const out = await res.json();
+    const rows = out.transactions || [];
+    $('#txRows').innerHTML = rows.length ? rows.map(t=>`<tr><td>${dateFmt(t.createdAt)}</td><td><span class="pill">${t.type}</span></td><td>${fmt(t.amount)}</td><td>${fmt(t.balanceAfter)}</td><td>${t.note||''}</td></tr>`).join('') : '<tr><td colspan="5">Hali transaction yo‘q.</td></tr>';
+  }
+
+  function injectScript(src, attrs={}){
+    const s=document.createElement('script'); s.src=src; s.async=true;
+    Object.entries(attrs).forEach(([k,v])=>s.setAttribute(k,v));
+    $('#adBox').appendChild(s);
+  }
+  function loadAdPlacement(){
+    const p = placements[Math.floor(Math.random()*placements.length)];
+    $('#adBox').innerHTML = `<div class="muted">${p.name} yuklanmoqda...</div>`;
+    $('#modalStatus').textContent = `${p.name} • 5 soniya kuting`;
+    setTimeout(()=>{
+      $('#adBox').innerHTML='';
+      if(p.type==='native'){
+        const div=document.createElement('div'); div.id=p.container; $('#adBox').appendChild(div);
+        injectScript(p.src, {'data-cfasync':'false'});
+      } else if(p.type==='script'){
+        injectScript(p.src);
+      } else if(p.type==='iframe'){
+        const frame=document.createElement('iframe'); frame.src=p.src; frame.width='100%'; frame.height='360'; frame.loading='lazy'; frame.referrerPolicy='no-referrer-when-downgrade'; $('#adBox').appendChild(frame);
+      } else if(p.type==='at'){
+        const holder=document.createElement('div'); holder.style.width=Math.min(p.w, window.innerWidth-80)+'px'; holder.style.maxWidth='100%'; holder.style.minHeight=Math.min(p.h, 360)+'px'; holder.style.display='grid'; holder.style.placeItems='center'; holder.innerHTML='<span class="muted">Banner slot</span>'; $('#adBox').appendChild(holder);
+        window.atOptions = { key:p.key, format:'iframe', height:p.h, width:p.w, params:{} };
+        injectScript(`https://www.highperformanceformat.com/${p.key}/invoke.js`);
+      }
+    },150);
+  }
+
+  async function startAd(){
+    if(completing) return;
+    $('#closeAdBtn').classList.add('hide');
+    $('#adModal').classList.add('show');
+    $('#circle').textContent='5'; $('#circle').style.setProperty('--p','0%');
+    $('#adBox').innerHTML='<div>Session ochilmoqda...</div>';
+    const res = await fetch('/api/ad/session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+    const out = await res.json();
+    if(!out.ok){ $('#adModal').classList.remove('show'); return toast(out.message || 'Ad session xato'); }
+    activeSession = out.sessionId;
+    const seconds = out.viewSeconds || 5;
+    loadAdPlacement();
+    let left = seconds;
+    const timer = setInterval(async ()=>{
+      left -= 1;
+      const done = ((seconds-left)/seconds)*100;
+      $('#circle').textContent = Math.max(0,left);
+      $('#circle').style.setProperty('--p', done+'%');
+      if(left <= 0){
+        clearInterval(timer);
+        $('#modalStatus').textContent='Reward tekshirilmoqda...';
+        await completeAd();
+      }
+    },1000);
+  }
+  async function completeAd(){
+    if(!activeSession || completing) return;
+    completing = true;
+    const res = await fetch('/api/ad/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId:activeSession})});
+    const out = await res.json();
+    completing = false;
+    if(!out.ok){ $('#modalStatus').textContent = out.message || 'Reward xato'; $('#closeAdBtn').classList.remove('hide'); return; }
+    me = out.user; renderUser(); loadTx();
+    $('#modalStatus').textContent = `${out.isLucky ? '🎁 Lucky bonus!' : '✅ Reward'} +${fmt(out.reward)}`;
+    $('#closeAdBtn').classList.remove('hide');
+    toast(`${out.isLucky ? 'Lucky reward' : 'Reward'}: +${fmt(out.reward)}`);
+  }
+  watchBtn.onclick = startAd;
+  closeAdBtn.onclick = () => { $('#adModal').classList.remove('show'); $('#adBox').innerHTML=''; activeSession=null; };
+  copyRef.onclick = async () => { await navigator.clipboard.writeText($('#refLink').value); toast('Referral link copy qilindi'); };
+  logoutBtn.onclick = async () => { await fetch('/api/auth/logout',{method:'POST'}); location.href='/login.html'; };
+  loadMe();
+</script>
+</body>
+</html>

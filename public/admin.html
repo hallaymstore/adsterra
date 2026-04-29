@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Reward Arena</title>
+  <style>
+    :root{--bg:#080b18;--card:rgba(255,255,255,.08);--card2:rgba(255,255,255,.13);--text:#f8fbff;--muted:#aab6d3;--line:rgba(255,255,255,.14);--primary:#7c3cff;--primary2:#00e5ff;--good:#3dff9e;--warn:#ffd166;--bad:#ff5c8a;--shadow:0 22px 80px rgba(0,0,0,.4);--radius:26px}body.light{--bg:#f4f7ff;--card:rgba(255,255,255,.84);--card2:rgba(255,255,255,.96);--text:#121831;--muted:#59627a;--line:rgba(18,24,49,.12);--shadow:0 22px 70px rgba(60,58,138,.16)}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 18% 10%,rgba(124,60,255,.42),transparent 27%),radial-gradient(circle at 86% 8%,rgba(0,229,255,.30),transparent 24%),var(--bg);min-height:100vh}a{text-decoration:none;color:inherit}.wrap{width:min(1380px,94vw);margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}.brand{display:flex;gap:12px;align-items:center;font-weight:950}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;box-shadow:0 0 35px rgba(124,60,255,.55);font-size:22px}.navlinks{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 13px;border-radius:14px;font-weight:900;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-2px)}.btn.primary{border:0;background:linear-gradient(135deg,var(--primary),#ff4fd8);box-shadow:0 12px 34px rgba(124,60,255,.35);color:#fff}.btn.good{border:0;background:linear-gradient(135deg,#00c875,var(--good));color:#031711}.btn.bad{border:0;background:linear-gradient(135deg,#ff357c,#ff8a00);color:#fff}.btn.warn{border:0;background:linear-gradient(135deg,#ffb703,#fb8500);color:#1f1400}.card{border:1px solid var(--line);background:linear-gradient(180deg,var(--card2),rgba(255,255,255,.055));border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);backdrop-filter:blur(16px);margin-bottom:18px}h1{font-size:clamp(30px,4vw,54px);margin:0 0 8px;letter-spacing:-2px}.muted{color:var(--muted);line-height:1.65}.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.stat{border:1px solid var(--line);background:rgba(0,0,0,.16);border-radius:20px;padding:15px}.light .stat{background:rgba(255,255,255,.55)}.stat span{color:var(--muted);font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:.06em}.stat b{display:block;margin-top:7px;font-size:22px}.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.search{border:1px solid var(--line);outline:0;background:rgba(0,0,0,.18);color:var(--text);padding:13px 15px;border-radius:16px;min-width:260px}.light .search{background:rgba(255,255,255,.72)}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:1060px}.table th,.table td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}.table th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(124,60,255,.14);border:1px solid var(--line);font-weight:850}.active{color:var(--good)}.blocked,.rejected{color:var(--bad)}.pending{color:var(--warn)}.approved{color:var(--good)}.mini{display:flex;gap:6px;flex-wrap:wrap}.toast{position:fixed;right:18px;bottom:18px;border:1px solid var(--line);background:var(--card2);color:var(--text);padding:15px 18px;border-radius:18px;box-shadow:var(--shadow);display:none;z-index:70}.toast.show{display:block}@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){.stats{grid-template-columns:1fr}.search{min-width:100%;width:100%}.nav{align-items:flex-start}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a class="brand" href="/admin.html"><span class="logo">👑</span><span>Admin Arena</span></a>
+    <div class="navlinks">
+      <a class="btn" href="/dashboard.html">🎮 Dashboard</a>
+      <button class="btn" id="themeBtn">🌗 Rejim</button>
+      <button class="btn bad" id="logoutBtn">Chiqish</button>
+    </div>
+  </nav>
+  <section class="card">
+    <h1>Admin Dashboard</h1>
+    <p class="muted">Jami foydalanuvchilar, reklama ko‘rishlar, balanslar, taxminiy provider revenue va withdrawal so‘rovlari.</p>
+    <div class="stats" id="stats"><div class="stat"><span>Loading</span><b>...</b></div></div>
+  </section>
+
+  <section class="card">
+    <div class="tools" style="justify-content:space-between;margin-bottom:14px">
+      <h2 style="margin:0">Foydalanuvchilar</h2>
+      <div class="tools"><input class="search" id="userSearch" placeholder="Email, ism yoki referral code"><button class="btn primary" id="searchBtn">Qidirish</button><button class="btn" id="refreshBtn">Refresh</button></div>
+    </div>
+    <div class="tablewrap"><table class="table"><thead><tr><th>User</th><th>Email</th><th>Status</th><th>Role</th><th>Balance</th><th>Frozen</th><th>Views</th><th>Earned</th><th>Withdrawn</th><th>Referral</th><th>Actions</th></tr></thead><tbody id="userRows"><tr><td colspan="11">Yuklanmoqda...</td></tr></tbody></table></div>
+  </section>
+
+  <section class="card">
+    <div class="tools" style="justify-content:space-between;margin-bottom:14px">
+      <h2 style="margin:0">Withdrawal so‘rovlari</h2>
+      <div class="tools"><button class="btn" data-status="">Hammasi</button><button class="btn warn" data-status="pending">Pending</button><button class="btn good" data-status="approved">Approved</button><button class="btn bad" data-status="rejected">Rejected</button></div>
+    </div>
+    <div class="tablewrap"><table class="table"><thead><tr><th>Vaqt</th><th>User</th><th>Email</th><th>Payeer</th><th>Amount</th><th>Status</th><th>Admin note</th><th>Actions</th></tr></thead><tbody id="withdrawRows"><tr><td colspan="8">Yuklanmoqda...</td></tr></tbody></table></div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin-top:0">Oxirgi ad sessions</h2>
+    <div class="tablewrap"><table class="table"><thead><tr><th>Vaqt</th><th>User</th><th>Email</th><th>View #</th><th>Reward</th><th>Lucky</th><th>IP</th></tr></thead><tbody id="adRows"><tr><td colspan="7">Yuklanmoqda...</td></tr></tbody></table></div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+  const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+  const theme=localStorage.getItem('theme')||'dark'; if(theme==='light') document.body.classList.add('light');
+  themeBtn.onclick=()=>{document.body.classList.toggle('light'); localStorage.setItem('theme',document.body.classList.contains('light')?'light':'dark')};
+  function fmt(n,d=6){return '$'+Number(n||0).toFixed(d)}
+  function int(n){return Number(n||0).toLocaleString()}
+  function dateFmt(x){return new Date(x).toLocaleString()}
+  function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3200)}
+  async function api(url, opts={}){const r=await fetch(url,{headers:{'Content-Type':'application/json'},...opts}); if(r.status===401||r.status===403){location.href='/login.html'; return null} const o=await r.json(); if(!o.ok) toast(o.message||'Xato'); return o;}
+
+  async function guard(){const o=await api('/api/me'); if(!o) return; if(o.user.role!=='admin'){location.href='/dashboard.html'; return;} loadAll();}
+  async function loadStats(){const o=await api('/api/admin/stats'); if(!o)return; const s=o.stats; $('#stats').innerHTML=`
+    <div class="stat"><span>Users</span><b>${int(s.totalUsers)}</b></div>
+    <div class="stat"><span>Total views</span><b>${int(s.totalViews)}</b></div>
+    <div class="stat"><span>User rewards</span><b>${fmt(s.totalUserRewards)}</b></div>
+    <div class="stat"><span>Balances</span><b>${fmt(s.totalBalance)}</b></div>
+    <div class="stat"><span>Frozen</span><b>${fmt(s.totalFrozen)}</b></div>
+    <div class="stat"><span>Withdrawn</span><b>${fmt(s.totalWithdrawn)}</b></div>
+    <div class="stat"><span>Pending WD</span><b>${int(s.pendingWithdrawals.count)} / ${fmt(s.pendingWithdrawals.amount)}</b></div>
+    <div class="stat"><span>Est. CPM</span><b>${fmt(s.estimatedProviderCpmUsd,2)}</b></div>
+    <div class="stat"><span>Est. provider</span><b>${fmt(s.estimatedProviderRevenue,4)}</b></div>
+    <div class="stat"><span>Est. platform</span><b>${fmt(s.estimatedPlatformGross,4)}</b></div>
+    <div class="stat"><span>Lucky</span><b>${int(s.luckyRewards)}</b></div>
+    <div class="stat"><span>Blocked</span><b>${int(s.blockedUsers)}</b></div>`;}
+
+  async function loadUsers(){const q=encodeURIComponent($('#userSearch').value.trim()); const o=await api('/api/admin/users'+(q?'?q='+q:'')); if(!o)return; const rows=o.users||[]; $('#userRows').innerHTML=rows.length?rows.map(u=>`<tr><td>${u.fullName||''}</td><td>${u.email}</td><td><span class="pill ${u.status}">${u.status}</span></td><td>${u.role}</td><td>${fmt(u.balance)}</td><td>${fmt(u.frozenBalance)}</td><td>${int(u.adViews)}</td><td>${fmt(u.totalEarned)}</td><td>${fmt(u.totalWithdrawn)}</td><td>${u.referralCode||''}</td><td><div class="mini"><button class="btn" onclick="editBalance('${u._id}',${Number(u.balance||0)})">Balance</button><button class="btn warn" onclick="toggleStatus('${u._id}','${u.status}')">${u.status==='active'?'Block':'Active'}</button><button class="btn" onclick="toggleRole('${u._id}','${u.role}')">Role</button></div></td></tr>`).join(''):'<tr><td colspan="11">User topilmadi</td></tr>';}
+
+  async function editBalance(id,current){const val=prompt('Yangi balance USD:', current); if(val===null)return; const balance=Number(val); if(!Number.isFinite(balance)||balance<0)return toast('Balance noto‘g‘ri'); const o=await api('/api/admin/users/'+id,{method:'PATCH',body:JSON.stringify({balance})}); if(o&&o.ok){toast('Balance yangilandi'); loadAll();}}
+  async function toggleStatus(id,status){const next=status==='active'?'blocked':'active'; if(!confirm('Status: '+next+' qilinsinmi?'))return; const o=await api('/api/admin/users/'+id,{method:'PATCH',body:JSON.stringify({status:next})}); if(o&&o.ok){toast('Status yangilandi'); loadAll();}}
+  async function toggleRole(id,role){const next=role==='admin'?'user':'admin'; if(!confirm('Role: '+next+' qilinsinmi?'))return; const o=await api('/api/admin/users/'+id,{method:'PATCH',body:JSON.stringify({role:next})}); if(o&&o.ok){toast('Role yangilandi'); loadAll();}}
+  window.editBalance=editBalance; window.toggleStatus=toggleStatus; window.toggleRole=toggleRole;
+
+  async function loadWithdrawals(status=''){const o=await api('/api/admin/withdrawals'+(status?'?status='+status:'')); if(!o)return; const rows=o.withdrawals||[]; $('#withdrawRows').innerHTML=rows.length?rows.map(w=>`<tr><td>${dateFmt(w.createdAt)}</td><td>${w.user?.fullName||''}</td><td>${w.user?.email||''}</td><td>${w.payeerAccount}</td><td>${fmt(w.amount)}</td><td><span class="pill ${w.status}">${w.status}</span></td><td>${w.adminNote||''}</td><td><div class="mini">${w.status==='pending'?`<button class="btn good" onclick="processWd('${w._id}','approve')">Approve</button><button class="btn bad" onclick="processWd('${w._id}','reject')">Reject</button>`:'-'}</div></td></tr>`).join(''):'<tr><td colspan="8">So‘rov topilmadi</td></tr>';}
+  async function processWd(id,action){const adminNote=prompt(action==='approve'?'Tasdiqlash note:':'Rad etish sababi:', action==='approve'?'Paid manually to Payeer':'Rejected by admin'); if(adminNote===null)return; const o=await api('/api/admin/withdrawals/'+id,{method:'PATCH',body:JSON.stringify({action,adminNote})}); if(o&&o.ok){toast('Withdrawal yangilandi'); loadAll();}}
+  window.processWd=processWd;
+
+  async function loadAds(){const o=await api('/api/admin/recent-ad-sessions'); if(!o)return; const rows=o.sessions||[]; $('#adRows').innerHTML=rows.length?rows.map(s=>`<tr><td>${dateFmt(s.completedAt||s.createdAt)}</td><td>${s.user?.fullName||''}</td><td>${s.user?.email||''}</td><td>${int(s.viewNo)}</td><td>${fmt(s.reward)}</td><td>${s.isLucky?'🎁 Yes':'No'}</td><td>${s.ip||''}</td></tr>`).join(''):'<tr><td colspan="7">Ad session yo‘q.</td></tr>';}
+  function loadAll(){loadStats();loadUsers();loadWithdrawals();loadAds();}
+  searchBtn.onclick=loadUsers; refreshBtn.onclick=loadAll; userSearch.onkeydown=e=>{if(e.key==='Enter')loadUsers()};
+  $$('[data-status]').forEach(b=>b.onclick=()=>loadWithdrawals(b.dataset.status));
+  logoutBtn.onclick=async()=>{await fetch('/api/auth/logout',{method:'POST'}); location.href='/login.html'};
+  guard();
+</script>
+</body>
+</html>
