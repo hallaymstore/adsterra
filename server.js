@@ -19,6 +19,8 @@ const ESTIMATED_PROVIDER_CPM_USD = Number(process.env.ESTIMATED_PROVIDER_CPM_USD
 const VIEW_SECONDS = Number(process.env.VIEW_SECONDS || 5);
 const SESSION_TTL_MS = Number(process.env.SESSION_TTL_MS || 2 * 60 * 1000);
 const AD_COOLDOWN_MS = Number(process.env.AD_COOLDOWN_MS || 7000);
+const AUTOWATCH_PRICE_USD = Number(process.env.AUTOWATCH_PRICE_USD || 0.49);
+const AUTOWATCH_CAP_USD = Number(process.env.AUTOWATCH_CAP_USD || 1.51);
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -47,6 +49,14 @@ const userSchema = new mongoose.Schema({
   totalWithdrawn: { type: Number, default: 0 },
   adViews: { type: Number, default: 0 },
   luckyRewards: { type: Number, default: 0 },
+  autoWatchActive: { type: Boolean, default: false, index: true },
+  autoWatchEarned: { type: Number, default: 0 },
+  autoWatchCap: { type: Number, default: 0 },
+  autoWatchPricePaid: { type: Number, default: 0 },
+  autoWatchPassesPurchased: { type: Number, default: 0 },
+  autoWatchStartedAt: { type: Date, default: null },
+  autoWatchCompletedAt: { type: Date, default: null },
+  autoWatchLastPurchasedAt: { type: Date, default: null },
   referralCode: { type: String, unique: true, sparse: true, index: true },
   referredBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   lastAdStartedAt: { type: Date, default: null },
@@ -60,6 +70,7 @@ const adSessionSchema = new mongoose.Schema({
   reward: { type: Number, default: 0 },
   viewNo: { type: Number, default: 0 },
   isLucky: { type: Boolean, default: false },
+  mode: { type: String, enum: ['manual', 'smart'], default: 'manual', index: true },
   ip: String,
   userAgent: String,
   startedAt: { type: Date, default: Date.now, index: true },
@@ -68,7 +79,7 @@ const adSessionSchema = new mongoose.Schema({
 
 const transactionSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-  type: { type: String, enum: ['ad_reward', 'withdraw_request', 'withdraw_approved', 'withdraw_rejected', 'admin_adjust'], required: true, index: true },
+  type: { type: String, enum: ['ad_reward', 'withdraw_request', 'withdraw_approved', 'withdraw_rejected', 'admin_adjust', 'autowatch_purchase'], required: true, index: true },
   amount: { type: Number, required: true },
   balanceAfter: { type: Number, required: true },
   note: { type: String, maxlength: 500 },
@@ -196,6 +207,17 @@ function publicUser(user) {
     totalWithdrawn: money(user.totalWithdrawn),
     adViews: user.adViews,
     luckyRewards: user.luckyRewards,
+    autoWatch: {
+      active: Boolean(user.autoWatchActive),
+      earned: money(user.autoWatchEarned),
+      cap: money(user.autoWatchCap),
+      remaining: money(Math.max(0, (user.autoWatchCap || 0) - (user.autoWatchEarned || 0))),
+      pricePaid: money(user.autoWatchPricePaid),
+      passesPurchased: user.autoWatchPassesPurchased || 0,
+      startedAt: user.autoWatchStartedAt,
+      completedAt: user.autoWatchCompletedAt,
+      lastPurchasedAt: user.autoWatchLastPurchasedAt
+    },
     referralCode: user.referralCode,
     createdAt: user.createdAt
   };
@@ -213,12 +235,12 @@ app.post('/api/auth/register', async (req, res) => {
     const password = String(req.body.password || '');
     const ref = cleanString(req.body.ref, 40).toUpperCase();
 
-    if (!firstName || !lastName) return res.status(400).json({ ok: false, message: 'Ism va familiya kerak' });
-    if (!emailOk(email)) return res.status(400).json({ ok: false, message: 'Email noto‘g‘ri' });
-    if (password.length < 6) return res.status(400).json({ ok: false, message: 'Parol kamida 6 ta belgidan iborat bo‘lsin' });
+    if (!firstName || !lastName) return res.status(400).json({ ok: false, message: 'First and last name are required' });
+    if (!emailOk(email)) return res.status(400).json({ ok: false, message: 'Invalid email address' });
+    if (password.length < 6) return res.status(400).json({ ok: false, message: 'Password must be at least 6 characters' });
 
     const exists = await User.findOne({ email });
-    if (exists) return res.status(409).json({ ok: false, message: 'Bu email allaqachon ro‘yxatdan o‘tgan' });
+    if (exists) return res.status(409).json({ ok: false, message: 'This email is already registered' });
 
     let referredBy = null;
     if (ref) {
@@ -246,7 +268,7 @@ app.post('/api/auth/register', async (req, res) => {
     return res.json({ ok: true, user: publicUser(user) });
   } catch (err) {
     console.error('register error', err);
-    return res.status(500).json({ ok: false, message: 'Server xatosi' });
+    return res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
 
@@ -255,10 +277,10 @@ app.post('/api/auth/login', async (req, res) => {
     const email = cleanString(req.body.email, 120).toLowerCase();
     const password = String(req.body.password || '');
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ ok: false, message: 'Email yoki parol noto‘g‘ri' });
-    if (user.status !== 'active') return res.status(403).json({ ok: false, message: 'Account bloklangan' });
+    if (!user) return res.status(401).json({ ok: false, message: 'Invalid email or password' });
+    if (user.status !== 'active') return res.status(403).json({ ok: false, message: 'Account blocked' });
     const ok = await bcrypt.compare(password, user.passwordHash);
-    if (!ok) return res.status(401).json({ ok: false, message: 'Email yoki parol noto‘g‘ri' });
+    if (!ok) return res.status(401).json({ ok: false, message: 'Invalid email or password' });
     user.lastLoginAt = new Date();
     await user.save();
     const token = signToken(user);
@@ -266,7 +288,7 @@ app.post('/api/auth/login', async (req, res) => {
     return res.json({ ok: true, user: publicUser(user) });
   } catch (err) {
     console.error('login error', err);
-    return res.status(500).json({ ok: false, message: 'Server xatosi' });
+    return res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
 
@@ -276,16 +298,72 @@ app.post('/api/auth/logout', (req, res) => {
 });
 
 app.get('/api/me', authRequired, (req, res) => {
-  res.json({ ok: true, user: publicUser(req.user), config: { withdrawMin: WITHDRAW_MIN, viewSeconds: VIEW_SECONDS } });
+  res.json({ ok: true, user: publicUser(req.user), config: { withdrawMin: WITHDRAW_MIN, viewSeconds: VIEW_SECONDS, autoWatchPrice: AUTOWATCH_PRICE_USD, autoWatchCap: AUTOWATCH_CAP_USD } });
+});
+
+
+app.post('/api/autowatch/buy', authRequired, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ ok: false, message: 'User not found' });
+
+    const activeRemaining = Boolean(user.autoWatchActive) && Number(user.autoWatchEarned || 0) < Number(user.autoWatchCap || 0);
+    if (activeRemaining) {
+      return res.status(409).json({ ok: false, message: 'Smart Auto Mode is already active', user: publicUser(user) });
+    }
+
+    if (Number(user.balance || 0) < AUTOWATCH_PRICE_USD) {
+      return res.status(400).json({ ok: false, message: `Insufficient balance. Smart Auto Mode costs $${AUTOWATCH_PRICE_USD.toFixed(2)}` });
+    }
+
+    user.balance = money(user.balance - AUTOWATCH_PRICE_USD);
+    user.autoWatchActive = true;
+    user.autoWatchEarned = 0;
+    user.autoWatchCap = AUTOWATCH_CAP_USD;
+    user.autoWatchPricePaid = AUTOWATCH_PRICE_USD;
+    user.autoWatchPassesPurchased = Number(user.autoWatchPassesPurchased || 0) + 1;
+    user.autoWatchStartedAt = new Date();
+    user.autoWatchCompletedAt = null;
+    user.autoWatchLastPurchasedAt = new Date();
+    await user.save();
+
+    await Transaction.create({
+      user: user._id,
+      type: 'autowatch_purchase',
+      amount: -AUTOWATCH_PRICE_USD,
+      balanceAfter: user.balance,
+      note: 'Smart Auto Mode pass purchased',
+      meta: { price: AUTOWATCH_PRICE_USD, cap: AUTOWATCH_CAP_USD }
+    });
+
+    res.json({ ok: true, user: publicUser(user), config: { autoWatchPrice: AUTOWATCH_PRICE_USD, autoWatchCap: AUTOWATCH_CAP_USD } });
+  } catch (err) {
+    console.error('autowatch buy error', err);
+    res.status(500).json({ ok: false, message: 'Server error' });
+  }
 });
 
 app.post('/api/ad/session', authRequired, async (req, res) => {
   try {
     const fresh = await User.findById(req.user._id);
+    const requestedMode = cleanString(req.body.mode, 20) === 'smart' ? 'smart' : 'manual';
+
+    if (requestedMode === 'smart') {
+      const activeRemaining = Boolean(fresh.autoWatchActive) && Number(fresh.autoWatchEarned || 0) < Number(fresh.autoWatchCap || 0);
+      if (!activeRemaining) {
+        if (fresh.autoWatchActive) {
+          fresh.autoWatchActive = false;
+          fresh.autoWatchCompletedAt = new Date();
+          await fresh.save();
+        }
+        return res.status(403).json({ ok: false, message: 'Smart Auto Mode is not active. Buy a new pass to continue.' });
+      }
+    }
+
     const now = Date.now();
     if (fresh.lastAdStartedAt && now - fresh.lastAdStartedAt.getTime() < AD_COOLDOWN_MS) {
       const waitMs = AD_COOLDOWN_MS - (now - fresh.lastAdStartedAt.getTime());
-      return res.status(429).json({ ok: false, message: `Keyingi reklamaga ${Math.ceil(waitMs / 1000)} soniya kuting`, waitMs });
+      return res.status(429).json({ ok: false, message: `Wait ${Math.ceil(waitMs / 1000)} seconds before the next ad`, waitMs });
     }
 
     fresh.lastAdStartedAt = new Date();
@@ -295,38 +373,57 @@ app.post('/api/ad/session', authRequired, async (req, res) => {
     await AdSession.create({
       user: fresh._id,
       sessionId,
+      mode: requestedMode,
       ip: getClientIp(req),
       userAgent: cleanString(req.headers['user-agent'], 300),
       startedAt: new Date()
     });
 
-    res.json({ ok: true, sessionId, viewSeconds: VIEW_SECONDS });
+    res.json({ ok: true, sessionId, mode: requestedMode, viewSeconds: VIEW_SECONDS, user: publicUser(fresh) });
   } catch (err) {
     console.error('ad session error', err);
-    res.status(500).json({ ok: false, message: 'Server xatosi' });
+    res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
+
 
 app.post('/api/ad/complete', authRequired, async (req, res) => {
   try {
     const sessionId = cleanString(req.body.sessionId, 100);
     const session = await AdSession.findOne({ sessionId, user: req.user._id });
-    if (!session) return res.status(404).json({ ok: false, message: 'Ad session topilmadi' });
-    if (session.status === 'completed') return res.status(409).json({ ok: false, message: 'Bu reklama allaqachon hisoblangan' });
+    if (!session) return res.status(404).json({ ok: false, message: 'Ad session not found' });
+    if (session.status === 'completed') return res.status(409).json({ ok: false, message: 'This ad session was already credited' });
 
     const elapsed = Date.now() - session.startedAt.getTime();
     if (elapsed < VIEW_SECONDS * 1000) {
-      return res.status(400).json({ ok: false, message: `Kamida ${VIEW_SECONDS} soniya reklama ko‘ring` });
+      return res.status(400).json({ ok: false, message: `Watch for at least ${VIEW_SECONDS} seconds before claiming the reward` });
     }
     if (elapsed > SESSION_TTL_MS) {
       session.status = 'expired';
       await session.save();
-      return res.status(400).json({ ok: false, message: 'Session eskirdi, qaytadan urinib ko‘ring' });
+      return res.status(400).json({ ok: false, message: 'Session expired, please try again' });
     }
 
     const user = await User.findById(req.user._id);
     const nextViewNo = user.adViews + 1;
-    const { reward, isLucky } = calculateReward(nextViewNo);
+    let { reward, isLucky } = calculateReward(nextViewNo);
+
+    if (session.mode === 'smart') {
+      const activeRemaining = Boolean(user.autoWatchActive) && Number(user.autoWatchEarned || 0) < Number(user.autoWatchCap || 0);
+      if (!activeRemaining) {
+        user.autoWatchActive = false;
+        user.autoWatchCompletedAt = new Date();
+        await user.save();
+        return res.status(403).json({ ok: false, message: 'Smart Auto Mode cap reached. Buy a new pass to continue.', user: publicUser(user) });
+      }
+      const remaining = money((user.autoWatchCap || 0) - (user.autoWatchEarned || 0), 6);
+      reward = money(Math.min(reward, remaining), 6);
+      user.autoWatchEarned = money((user.autoWatchEarned || 0) + reward, 6);
+      if (user.autoWatchEarned >= user.autoWatchCap - 0.000001) {
+        user.autoWatchActive = false;
+        user.autoWatchCompletedAt = new Date();
+      }
+    }
 
     user.balance = money(user.balance + reward);
     user.totalEarned = money(user.totalEarned + reward);
@@ -346,14 +443,14 @@ app.post('/api/ad/complete', authRequired, async (req, res) => {
       type: 'ad_reward',
       amount: reward,
       balanceAfter: user.balance,
-      note: isLucky ? 'Lucky ad reward' : 'Ad reward',
-      meta: { sessionId, viewNo: nextViewNo, isLucky }
+      note: session.mode === 'smart' ? (isLucky ? 'Smart Auto Mode lucky reward' : 'Smart Auto Mode reward') : (isLucky ? 'Lucky ad reward' : 'Ad reward'),
+      meta: { sessionId, viewNo: nextViewNo, isLucky, mode: session.mode }
     });
 
-    return res.json({ ok: true, reward, isLucky, user: publicUser(user) });
+    return res.json({ ok: true, reward, isLucky, mode: session.mode, autoWatchCompleted: session.mode === 'smart' && !user.autoWatchActive, user: publicUser(user) });
   } catch (err) {
     console.error('ad complete error', err);
-    res.status(500).json({ ok: false, message: 'Server xatosi' });
+    res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
 
@@ -371,11 +468,11 @@ app.post('/api/withdrawals', authRequired, async (req, res) => {
   try {
     const payeerAccount = cleanString(req.body.payeerAccount, 80);
     const amount = money(req.body.amount, 6);
-    if (!payeerAccount || payeerAccount.length < 5) return res.status(400).json({ ok: false, message: 'Payeer hisob raqamini to‘g‘ri kiriting' });
-    if (!Number.isFinite(amount) || amount < WITHDRAW_MIN) return res.status(400).json({ ok: false, message: `Minimal yechish miqdori $${WITHDRAW_MIN}` });
+    if (!payeerAccount || payeerAccount.length < 5) return res.status(400).json({ ok: false, message: 'Enter a valid Payeer account' });
+    if (!Number.isFinite(amount) || amount < WITHDRAW_MIN) return res.status(400).json({ ok: false, message: `Minimum withdrawal amount is $${WITHDRAW_MIN}` });
 
     const user = await User.findById(req.user._id);
-    if (user.balance < amount) return res.status(400).json({ ok: false, message: 'Balans yetarli emas' });
+    if (user.balance < amount) return res.status(400).json({ ok: false, message: 'Insufficient balance' });
 
     user.balance = money(user.balance - amount);
     user.frozenBalance = money(user.frozenBalance + amount);
@@ -394,17 +491,19 @@ app.post('/api/withdrawals', authRequired, async (req, res) => {
     res.json({ ok: true, withdrawal, user: publicUser(user) });
   } catch (err) {
     console.error('withdrawal create error', err);
-    res.status(500).json({ ok: false, message: 'Server xatosi' });
+    res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
 
 app.get('/api/admin/stats', authRequired, adminRequired, async (req, res) => {
-  const [totalUsers, activeUsers, blockedUsers, adStats, balanceStats, pendingWithdrawals, approvedWithdrawals, rejectedWithdrawals] = await Promise.all([
+  const [totalUsers, activeUsers, blockedUsers, autoWatchUsers, adStats, balanceStats, autoWatchStats, pendingWithdrawals, approvedWithdrawals, rejectedWithdrawals] = await Promise.all([
     User.countDocuments(),
     User.countDocuments({ status: 'active' }),
     User.countDocuments({ status: 'blocked' }),
+    User.countDocuments({ autoWatchActive: true }),
     User.aggregate([{ $group: { _id: null, totalViews: { $sum: '$adViews' }, totalEarned: { $sum: '$totalEarned' }, totalWithdrawn: { $sum: '$totalWithdrawn' }, luckyRewards: { $sum: '$luckyRewards' } } }]),
     User.aggregate([{ $group: { _id: null, totalBalance: { $sum: '$balance' }, totalFrozen: { $sum: '$frozenBalance' } } }]),
+    Transaction.aggregate([{ $match: { type: 'autowatch_purchase' } }, { $group: { _id: null, count: { $sum: 1 }, amount: { $sum: '$amount' } } }]),
     Withdrawal.aggregate([{ $match: { status: 'pending' } }, { $group: { _id: null, count: { $sum: 1 }, amount: { $sum: '$amount' } } }]),
     Withdrawal.aggregate([{ $match: { status: 'approved' } }, { $group: { _id: null, count: { $sum: 1 }, amount: { $sum: '$amount' } } }]),
     Withdrawal.aggregate([{ $match: { status: 'rejected' } }, { $group: { _id: null, count: { $sum: 1 }, amount: { $sum: '$amount' } } }])
@@ -412,6 +511,7 @@ app.get('/api/admin/stats', authRequired, adminRequired, async (req, res) => {
 
   const a = adStats[0] || { totalViews: 0, totalEarned: 0, totalWithdrawn: 0, luckyRewards: 0 };
   const b = balanceStats[0] || { totalBalance: 0, totalFrozen: 0 };
+  const aw = autoWatchStats[0] || { count: 0, amount: 0 };
   const p = pendingWithdrawals[0] || { count: 0, amount: 0 };
   const ap = approvedWithdrawals[0] || { count: 0, amount: 0 };
   const rj = rejectedWithdrawals[0] || { count: 0, amount: 0 };
@@ -424,6 +524,8 @@ app.get('/api/admin/stats', authRequired, adminRequired, async (req, res) => {
       totalUsers,
       activeUsers,
       blockedUsers,
+      autoWatchUsers,
+      autoWatchPurchases: { count: aw.count, amount: money(Math.abs(aw.amount || 0)) },
       totalViews: a.totalViews,
       luckyRewards: a.luckyRewards,
       totalUserRewards: money(a.totalEarned),
@@ -450,7 +552,7 @@ app.get('/api/admin/users', authRequired, adminRequired, async (req, res) => {
 app.patch('/api/admin/users/:id', authRequired, adminRequired, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ ok: false, message: 'User topilmadi' });
+    if (!user) return res.status(404).json({ ok: false, message: 'User not found' });
 
     const allowedStatus = ['active', 'blocked'];
     const allowedRole = ['user', 'admin'];
@@ -474,7 +576,7 @@ app.patch('/api/admin/users/:id', authRequired, adminRequired, async (req, res) 
     res.json({ ok: true, user: publicUser(user) });
   } catch (err) {
     console.error('admin user patch error', err);
-    res.status(500).json({ ok: false, message: 'Server xatosi' });
+    res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
 
@@ -489,17 +591,17 @@ app.patch('/api/admin/withdrawals/:id', authRequired, adminRequired, async (req,
   try {
     const action = cleanString(req.body.action, 20);
     const adminNote = cleanString(req.body.adminNote, 500);
-    if (!['approve', 'reject'].includes(action)) return res.status(400).json({ ok: false, message: 'Action noto‘g‘ri' });
+    if (!['approve', 'reject'].includes(action)) return res.status(400).json({ ok: false, message: 'Invalid action' });
 
     const withdrawal = await Withdrawal.findById(req.params.id);
-    if (!withdrawal) return res.status(404).json({ ok: false, message: 'So‘rov topilmadi' });
-    if (withdrawal.status !== 'pending') return res.status(409).json({ ok: false, message: 'Bu so‘rov allaqachon ko‘rilgan' });
+    if (!withdrawal) return res.status(404).json({ ok: false, message: 'Request not found' });
+    if (withdrawal.status !== 'pending') return res.status(409).json({ ok: false, message: 'This request has already been processed' });
 
     const user = await User.findById(withdrawal.user);
-    if (!user) return res.status(404).json({ ok: false, message: 'User topilmadi' });
+    if (!user) return res.status(404).json({ ok: false, message: 'User not found' });
 
     if (action === 'approve') {
-      if (user.frozenBalance < withdrawal.amount) return res.status(400).json({ ok: false, message: 'Frozen balance yetarli emas' });
+      if (user.frozenBalance < withdrawal.amount) return res.status(400).json({ ok: false, message: 'Frozen balance is not enough' });
       user.frozenBalance = money(user.frozenBalance - withdrawal.amount);
       user.totalWithdrawn = money(user.totalWithdrawn + withdrawal.amount);
       withdrawal.status = 'approved';
@@ -534,7 +636,7 @@ app.patch('/api/admin/withdrawals/:id', authRequired, adminRequired, async (req,
     res.json({ ok: true, withdrawal, user: publicUser(user) });
   } catch (err) {
     console.error('withdrawal admin patch error', err);
-    res.status(500).json({ ok: false, message: 'Server xatosi' });
+    res.status(500).json({ ok: false, message: 'Server error' });
   }
 });
 

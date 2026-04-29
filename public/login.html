@@ -1,90 +1,34 @@
 <!doctype html>
-<html lang="uz">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login / Register — Reward Arena</title>
   <style>
-    :root{--bg:#080b18;--card:rgba(255,255,255,.08);--card2:rgba(255,255,255,.13);--text:#f8fbff;--muted:#aab6d3;--line:rgba(255,255,255,.14);--primary:#7c3cff;--primary2:#00e5ff;--good:#3dff9e;--bad:#ff5c8a;--shadow:0 22px 80px rgba(0,0,0,.4);--radius:26px}body.light{--bg:#f4f7ff;--card:rgba(255,255,255,.84);--card2:rgba(255,255,255,.96);--text:#121831;--muted:#59627a;--line:rgba(18,24,49,.12);--shadow:0 22px 70px rgba(60,58,138,.16)}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 18% 10%,rgba(124,60,255,.48),transparent 30%),radial-gradient(circle at 86% 15%,rgba(0,229,255,.34),transparent 27%),var(--bg);min-height:100vh}a{text-decoration:none;color:inherit}.wrap{width:min(1120px,92vw);margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}.brand{display:flex;gap:12px;align-items:center;font-weight:900}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;box-shadow:0 0 35px rgba(124,60,255,.55);font-size:22px}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:12px 16px;border-radius:16px;font-weight:850;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-2px)}.btn.primary{border:0;background:linear-gradient(135deg,var(--primary),#ff4fd8);box-shadow:0 12px 34px rgba(124,60,255,.35)}.layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:34px;align-items:center;padding:40px 0 70px}.intro h1{font-size:clamp(40px,5vw,74px);line-height:.95;margin:0 0 20px;letter-spacing:-3px}.grad{background:linear-gradient(90deg,var(--primary2),var(--good),#fff);-webkit-background-clip:text;background-clip:text;color:transparent}.intro p{color:var(--muted);font-size:19px;line-height:1.7}.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:24px}.stat{border:1px solid var(--line);background:var(--card);border-radius:22px;padding:18px}.stat b{display:block;font-size:26px;margin-top:8px}.panel{position:relative;border:1px solid var(--line);background:linear-gradient(180deg,var(--card2),rgba(255,255,255,.05));border-radius:30px;padding:24px;box-shadow:var(--shadow);backdrop-filter:blur(18px)}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.tab{border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);padding:13px;border-radius:18px;font-weight:900;cursor:pointer}.tab.active{color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary2));border:0}.light .tab.active{color:#fff}.form{display:none}.form.active{display:block}.field{margin:13px 0}.field label{display:block;color:var(--muted);font-weight:800;font-size:13px;margin:0 0 7px}.field input{width:100%;border:1px solid var(--line);outline:0;background:rgba(0,0,0,.18);color:var(--text);padding:15px 16px;border-radius:17px;font-size:16px}.light .field input{background:rgba(255,255,255,.72)}.submit{width:100%;margin-top:10px;padding:16px;border-radius:18px;border:0;color:#fff;background:linear-gradient(135deg,var(--primary),#ff4fd8);font-weight:950;cursor:pointer;font-size:16px}.msg{margin-top:14px;padding:13px;border-radius:16px;border:1px solid var(--line);display:none}.msg.ok{display:block;background:rgba(61,255,158,.1);color:var(--good)}.msg.err{display:block;background:rgba(255,92,138,.1);color:var(--bad)}@media(max-width:850px){.layout{grid-template-columns:1fr;padding-top:20px}.statgrid{grid-template-columns:1fr}.intro h1{letter-spacing:-2px}}
+    :root{--bg:#080b18;--card:rgba(255,255,255,.08);--card2:rgba(255,255,255,.13);--text:#f8fbff;--muted:#aab6d3;--line:rgba(255,255,255,.14);--primary:#7c3cff;--primary2:#00e5ff;--good:#3dff9e;--bad:#ff5c8a;--shadow:0 22px 80px rgba(0,0,0,.4);--radius:26px}body.light{--bg:#f4f7ff;--card:rgba(255,255,255,.84);--card2:rgba(255,255,255,.96);--text:#121831;--muted:#59627a;--line:rgba(18,24,49,.12);--shadow:0 22px 70px rgba(60,58,138,.16)}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 18% 10%,rgba(124,60,255,.48),transparent 30%),radial-gradient(circle at 86% 15%,rgba(0,229,255,.34),transparent 27%),var(--bg);min-height:100vh}a{text-decoration:none;color:inherit}.wrap{width:min(1120px,92vw);margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;gap:14px}.brand{display:flex;gap:12px;align-items:center;font-weight:950}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;box-shadow:0 0 35px rgba(124,60,255,.55);font-size:22px}.navlinks{display:flex;gap:10px;flex-wrap:wrap}.btn,.select{border:1px solid var(--line);background:var(--card);color:var(--text);padding:12px 16px;border-radius:16px;font-weight:850;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-2px)}.btn.primary{border:0;background:linear-gradient(135deg,var(--primary),#ff4fd8);box-shadow:0 12px 34px rgba(124,60,255,.35)}.layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:34px;align-items:center;padding:40px 0 70px}.intro h1{font-size:clamp(40px,5vw,74px);line-height:.95;margin:0 0 20px;letter-spacing:-3px}.grad{background:linear-gradient(90deg,var(--primary2),var(--good),#fff);-webkit-background-clip:text;background-clip:text;color:transparent}.intro p{color:var(--muted);font-size:19px;line-height:1.7}.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:24px}.stat{border:1px solid var(--line);background:var(--card);border-radius:22px;padding:18px}.stat b{display:block;font-size:26px;margin-top:8px}.panel{border:1px solid var(--line);background:linear-gradient(180deg,var(--card2),rgba(255,255,255,.05));border-radius:30px;padding:24px;box-shadow:var(--shadow);backdrop-filter:blur(18px)}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.tab{border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);padding:13px;border-radius:18px;font-weight:900;cursor:pointer}.tab.active{color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary2));border:0}.form{display:none}.form.active{display:block}.field{margin:13px 0}.field label{display:block;color:var(--muted);font-weight:800;margin-bottom:8px}.field input{width:100%;border:1px solid var(--line);outline:0;background:rgba(0,0,0,.2);color:var(--text);padding:15px 16px;border-radius:17px;font-size:16px}.light .field input{background:rgba(255,255,255,.72)}.hint{color:var(--muted);font-size:13px;line-height:1.6}.msg{margin-top:14px;padding:12px 14px;border-radius:16px;border:1px solid var(--line);display:none}.msg.show{display:block}.msg.ok{color:var(--good)}.msg.bad{color:var(--bad)}@media(max-width:850px){.layout{grid-template-columns:1fr}.statgrid{grid-template-columns:1fr}.intro h1{letter-spacing:-2px}.nav{align-items:flex-start}}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <nav class="nav">
-      <a class="brand" href="/"><span class="logo">⚡</span><span>Reward Arena</span></a>
-      <button class="btn" id="themeBtn">🌗 Rejim</button>
-    </nav>
-    <main class="layout">
-      <section class="intro">
-        <h1>Accountga kiring yoki <span class="grad">yangi profil</span> yarating</h1>
-        <p>Bir marta login bo‘lgan foydalanuvchi keyingi kirishda avtomatik dashboardga yo‘naltiriladi.</p>
-        <div class="statgrid">
-          <div class="stat"><span>Modal timer</span><b>5s</b></div>
-          <div class="stat"><span>Reward target</span><b>$1 / 1200</b></div>
-          <div class="stat"><span>Withdrawal</span><b>Payeer</b></div>
-          <div class="stat"><span>Admin review</span><b>Manual</b></div>
-        </div>
-      </section>
-      <section class="panel">
-        <div class="tabs">
-          <button class="tab active" id="loginTab">🔐 Login</button>
-          <button class="tab" id="registerTab">🕹 Register</button>
-        </div>
-        <form class="form active" id="loginForm">
-          <div class="field"><label>Email</label><input name="email" type="email" placeholder="user@email.com" required></div>
-          <div class="field"><label>Parol</label><input name="password" type="password" placeholder="••••••••" required></div>
-          <button class="submit">Kirish</button>
-        </form>
-        <form class="form" id="registerForm">
-          <div class="field"><label>Ism</label><input name="firstName" placeholder="Ali" required></div>
-          <div class="field"><label>Familiya</label><input name="lastName" placeholder="Valiyev" required></div>
-          <div class="field"><label>Email</label><input name="email" type="email" placeholder="ali@email.com" required></div>
-          <div class="field"><label>Parol</label><input name="password" type="password" minlength="6" placeholder="Kamida 6 belgi" required></div>
-          <button class="submit">Ro‘yxatdan o‘tish</button>
-        </form>
-        <div class="msg" id="msg"></div>
-      </section>
-    </main>
-  </div>
+<div class="wrap">
+  <nav class="nav"><a class="brand" href="/"><span class="logo">⚡</span><span>Reward Arena</span></a><div class="navlinks"><select class="select" id="langSelect"><option value="en">EN</option><option value="ru">RU</option></select><button class="btn" id="themeBtn" data-i18n="theme">🌗 Theme</button></div></nav>
+  <main class="layout">
+    <section class="intro"><h1 data-i18n-html="title">Enter the <span class="grad">reward arena</span></h1><p data-i18n="lead">Create your account, collect internal rewards, and submit Payeer withdrawal requests after admin review.</p><div class="statgrid"><div class="stat"><span data-i18n="s1">Smart Mode Pass</span><b>$0.49</b></div><div class="stat"><span data-i18n="s2">Smart Cap</span><b>$1.51</b></div><div class="stat"><span data-i18n="s3">Manual Watch</span><b>5 sec</b></div><div class="stat"><span data-i18n="s4">Withdrawal</span><b>Payeer</b></div></div></section>
+    <section class="panel">
+      <div class="tabs"><button class="tab active" id="loginTab" data-i18n="loginTab">Login</button><button class="tab" id="registerTab" data-i18n="registerTab">Register</button></div>
+      <form class="form active" id="loginForm"><div class="field"><label data-i18n="email">Email</label><input id="loginEmail" type="email" autocomplete="email" required></div><div class="field"><label data-i18n="password">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required></div><button class="btn primary" type="submit" style="width:100%" data-i18n="loginBtn">🔐 Login</button></form>
+      <form class="form" id="registerForm"><div class="field"><label data-i18n="firstName">First name</label><input id="firstName" required></div><div class="field"><label data-i18n="lastName">Last name</label><input id="lastName" required></div><div class="field"><label data-i18n="email">Email</label><input id="regEmail" type="email" autocomplete="email" required></div><div class="field"><label data-i18n="password">Password</label><input id="regPassword" type="password" autocomplete="new-password" minlength="6" required></div><div class="field"><label data-i18n="ref">Referral code (optional)</label><input id="refCode"></div><button class="btn primary" type="submit" style="width:100%" data-i18n="createBtn">🚀 Create account</button><p class="hint" data-i18n="hint">Password must be at least 6 characters.</p></form>
+      <div class="msg" id="msg"></div>
+    </section>
+  </main>
+</div>
 <script>
-  const qs = new URLSearchParams(location.search);
-  const theme = localStorage.getItem('theme') || 'dark';
-  if(theme === 'light') document.body.classList.add('light');
-  themeBtn.onclick = () => { document.body.classList.toggle('light'); localStorage.setItem('theme', document.body.classList.contains('light') ? 'light':'dark'); };
-  const $ = s => document.querySelector(s);
-  const msg = $('#msg');
-  function showMsg(text, ok=false){ msg.textContent=text; msg.className='msg '+(ok?'ok':'err'); }
-  function setMode(mode){
-    const reg = mode === 'register';
-    loginTab.classList.toggle('active', !reg); registerTab.classList.toggle('active', reg);
-    loginForm.classList.toggle('active', !reg); registerForm.classList.toggle('active', reg);
-    history.replaceState(null,'', reg ? '/login.html?mode=register' : '/login.html');
-  }
-  loginTab.onclick = () => setMode('login');
-  registerTab.onclick = () => setMode('register');
-  if(qs.get('mode') === 'register') setMode('register');
-
-  fetch('/api/me').then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.ok) location.href=d.user.role==='admin'?'/admin.html':'/dashboard.html'; }).catch(()=>{});
-
-  loginForm.onsubmit = async e => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(loginForm));
-    const res = await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-    const out = await res.json();
-    if(!out.ok) return showMsg(out.message || 'Login xato');
-    showMsg('Kirish muvaffaqiyatli. Yo‘naltirilmoqda...', true);
-    setTimeout(()=> location.href = out.user.role === 'admin' ? '/admin.html' : '/dashboard.html', 400);
-  };
-  registerForm.onsubmit = async e => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(registerForm));
-    data.ref = qs.get('ref') || '';
-    const res = await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-    const out = await res.json();
-    if(!out.ok) return showMsg(out.message || 'Register xato');
-    showMsg('Account yaratildi. Dashboard ochilmoqda...', true);
-    setTimeout(()=> location.href='/dashboard.html', 400);
-  };
+const dict={en:{theme:'🌗 Theme',title:'Enter the <span class="grad">reward arena</span>',lead:'Create your account, collect internal rewards, and submit Payeer withdrawal requests after admin review.',s1:'Smart Mode Pass',s2:'Smart Cap',s3:'Manual Watch',s4:'Withdrawal',loginTab:'Login',registerTab:'Register',email:'Email',password:'Password',loginBtn:'🔐 Login',firstName:'First name',lastName:'Last name',ref:'Referral code (optional)',createBtn:'🚀 Create account',hint:'Password must be at least 6 characters.'},ru:{theme:'🌗 Тема',title:'Войдите в <span class="grad">reward arena</span>',lead:'Создайте аккаунт, собирайте внутренние награды и отправляйте заявки на вывод Payeer после проверки администратора.',s1:'Пропуск Smart Mode',s2:'Лимит Smart',s3:'Ручной просмотр',s4:'Вывод',loginTab:'Вход',registerTab:'Регистрация',email:'Email',password:'Пароль',loginBtn:'🔐 Войти',firstName:'Имя',lastName:'Фамилия',ref:'Реферальный код (необязательно)',createBtn:'🚀 Создать аккаунт',hint:'Пароль должен содержать минимум 6 символов.'}};
+let lang=localStorage.getItem('lang')||'en'; langSelect.value=lang; function applyLang(){document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=dict[lang][e.dataset.i18n]||e.textContent);document.querySelectorAll('[data-i18n-html]').forEach(e=>e.innerHTML=dict[lang][e.dataset.i18nHtml]||e.innerHTML)} langSelect.onchange=()=>{lang=langSelect.value;localStorage.setItem('lang',lang);applyLang()}; applyLang();
+const theme=localStorage.getItem('theme')||'dark'; if(theme==='light') document.body.classList.add('light'); themeBtn.onclick=()=>{document.body.classList.toggle('light');localStorage.setItem('theme',document.body.classList.contains('light')?'light':'dark')};
+const qs=new URLSearchParams(location.search); if(qs.get('ref')) refCode.value=qs.get('ref'); function show(mode){loginTab.classList.toggle('active',mode==='login');registerTab.classList.toggle('active',mode==='register');loginForm.classList.toggle('active',mode==='login');registerForm.classList.toggle('active',mode==='register')} loginTab.onclick=()=>show('login'); registerTab.onclick=()=>show('register'); if(qs.get('mode')==='register') show('register');
+const msg=document.getElementById('msg'); function notice(t,bad=true){msg.textContent=t;msg.className='msg show '+(bad?'bad':'ok')}
+async function go(){const r=await fetch('/api/me'); if(r.ok){const o=await r.json(); if(o.ok) location.href=o.user.role==='admin'?'/admin.html':'/dashboard.html'}} go();
+loginForm.onsubmit=async e=>{e.preventDefault();const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:loginEmail.value,password:loginPassword.value})});const o=await r.json(); if(!o.ok)return notice(o.message||'Login failed'); location.href=o.user.role==='admin'?'/admin.html':'/dashboard.html'};
+registerForm.onsubmit=async e=>{e.preventDefault();const r=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({firstName:firstName.value,lastName:lastName.value,email:regEmail.value,password:regPassword.value,ref:refCode.value})});const o=await r.json(); if(!o.ok)return notice(o.message||'Registration failed'); location.href='/dashboard.html'};
 </script>
 </body>
 </html>

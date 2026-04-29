@@ -29,7 +29,7 @@
       <h2 style="margin:0">Foydalanuvchilar</h2>
       <div class="tools"><input class="search" id="userSearch" placeholder="Email, ism yoki referral code"><button class="btn primary" id="searchBtn">Qidirish</button><button class="btn" id="refreshBtn">Refresh</button></div>
     </div>
-    <div class="tablewrap"><table class="table"><thead><tr><th>User</th><th>Email</th><th>Status</th><th>Role</th><th>Balance</th><th>Frozen</th><th>Views</th><th>Earned</th><th>Withdrawn</th><th>Referral</th><th>Actions</th></tr></thead><tbody id="userRows"><tr><td colspan="11">Yuklanmoqda...</td></tr></tbody></table></div>
+    <div class="tablewrap"><table class="table"><thead><tr><th>User</th><th>Email</th><th>Status</th><th>Role</th><th>Balance</th><th>Frozen</th><th>Views</th><th>Earned</th><th>Withdrawn</th><th>Auto</th><th>Auto earned</th><th>Referral</th><th>Actions</th></tr></thead><tbody id="userRows"><tr><td colspan="13">Yuklanmoqda...</td></tr></tbody></table></div>
   </section>
 
   <section class="card">
@@ -69,9 +69,11 @@
     <div class="stat"><span>Est. provider</span><b>${fmt(s.estimatedProviderRevenue,4)}</b></div>
     <div class="stat"><span>Est. platform</span><b>${fmt(s.estimatedPlatformGross,4)}</b></div>
     <div class="stat"><span>Lucky</span><b>${int(s.luckyRewards)}</b></div>
+    <div class="stat"><span>Auto active</span><b>${int(s.autoWatchUsers)}</b></div>
+    <div class="stat"><span>Auto sales</span><b>${int(s.autoWatchPurchases?.count||0)} / ${fmt(s.autoWatchPurchases?.amount||0,2)}</b></div>
     <div class="stat"><span>Blocked</span><b>${int(s.blockedUsers)}</b></div>`;}
 
-  async function loadUsers(){const q=encodeURIComponent($('#userSearch').value.trim()); const o=await api('/api/admin/users'+(q?'?q='+q:'')); if(!o)return; const rows=o.users||[]; $('#userRows').innerHTML=rows.length?rows.map(u=>`<tr><td>${u.fullName||''}</td><td>${u.email}</td><td><span class="pill ${u.status}">${u.status}</span></td><td>${u.role}</td><td>${fmt(u.balance)}</td><td>${fmt(u.frozenBalance)}</td><td>${int(u.adViews)}</td><td>${fmt(u.totalEarned)}</td><td>${fmt(u.totalWithdrawn)}</td><td>${u.referralCode||''}</td><td><div class="mini"><button class="btn" onclick="editBalance('${u._id}',${Number(u.balance||0)})">Balance</button><button class="btn warn" onclick="toggleStatus('${u._id}','${u.status}')">${u.status==='active'?'Block':'Active'}</button><button class="btn" onclick="toggleRole('${u._id}','${u.role}')">Role</button></div></td></tr>`).join(''):'<tr><td colspan="11">User topilmadi</td></tr>';}
+  async function loadUsers(){const q=encodeURIComponent($('#userSearch').value.trim()); const o=await api('/api/admin/users'+(q?'?q='+q:'')); if(!o)return; const rows=o.users||[]; $('#userRows').innerHTML=rows.length?rows.map(u=>`<tr><td>${u.fullName||''}</td><td>${u.email}</td><td><span class="pill ${u.status}">${u.status}</span></td><td>${u.role}</td><td>${fmt(u.balance)}</td><td>${fmt(u.frozenBalance)}</td><td>${int(u.adViews)}</td><td>${fmt(u.totalEarned)}</td><td>${fmt(u.totalWithdrawn)}</td><td>${u.autoWatch?.active?'Faol':'Off'}</td><td>${fmt(u.autoWatch?.earned||0)} / ${fmt(u.autoWatch?.cap||0)}</td><td>${u.referralCode||''}</td><td><div class="mini"><button class="btn" onclick="editBalance('${u._id}',${Number(u.balance||0)})">Balance</button><button class="btn warn" onclick="toggleStatus('${u._id}','${u.status}')">${u.status==='active'?'Block':'Active'}</button><button class="btn" onclick="toggleRole('${u._id}','${u.role}')">Role</button></div></td></tr>`).join(''):'<tr><td colspan="13">User topilmadi</td></tr>';}
 
   async function editBalance(id,current){const val=prompt('Yangi balance USD:', current); if(val===null)return; const balance=Number(val); if(!Number.isFinite(balance)||balance<0)return toast('Balance noto‘g‘ri'); const o=await api('/api/admin/users/'+id,{method:'PATCH',body:JSON.stringify({balance})}); if(o&&o.ok){toast('Balance yangilandi'); loadAll();}}
   async function toggleStatus(id,status){const next=status==='active'?'blocked':'active'; if(!confirm('Status: '+next+' qilinsinmi?'))return; const o=await api('/api/admin/users/'+id,{method:'PATCH',body:JSON.stringify({status:next})}); if(o&&o.ok){toast('Status yangilandi'); loadAll();}}
